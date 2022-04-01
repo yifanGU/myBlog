@@ -23,7 +23,13 @@ git reflog
 查看详细日志
 git log 
 版本穿越
-git reset --hard 版本号 
+git reset --hard 版本号或者head^ 
+放弃修改（没有缓存）
+git checkout --filepathname
+git checkout .
+放弃修改（已经git add缓存）
+git reset HEAD pfilepathnam
+get reset HEAD .
 ```
 
 ##三、git分支操作
@@ -32,7 +38,7 @@ git reset --hard 版本号
 git branch -v
 创建分支
 git branch 分支名
-切换分支
+切换分支,或者放弃当前修改
 git checkout 分支名
 合并分支(在需要的母分支上)
 git merge 需要合并的分支
