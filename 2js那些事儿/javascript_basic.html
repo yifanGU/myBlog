@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 工厂方法
+        function Person(name,age,gender){
+            this.name = name
+            this.age = age
+            this.gender = gender
+        }
+        Person.prototype.calling = ()=>{
+            console.log(
+                'hello'
+            )
+        }
+        let i = new Person()
+        i.calling()
+
+        function Animal(){
+            this.say = ()=>{console.log('hello')}
+            this.hp = 10
+            this.mp = 20
+        }
+        function Cat(){
+            
+        }
+        Cat.prototype = new Animal()
+        let cat = new Cat()
+        console.log(cat)
+        cat.say()
+
+        //ES6
+        // symbol
+        let symbol1 = Symbol()
+        let symbol2 = Symbol.for('hello')
+        // symbol 保护
+        let game = {}
+        let methods = {
+            up:Symbol(),
+            down:Symbol()
+        }
+        game[methods.up]=function(){}
+
+        let youxi = {
+            name:'狼人杀',
+            [Symbol('say')]:function(){
+                console.log('hello')
+            }
+        }
+        // rest 参数
+        function date(){
+            console.log(arguments)
+        }
+        date(1,2,3,4)
+
+        function date2(...args){
+            console.log(args)
+        }
+        date2(1,2,3,4)
+
+
+        // Promise
+        const p = new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                let data = '数据库中的用户数据'
+                resolve(data)
+            },1000)
+        })
+        p.then((value)=>{
+            console.log(value)
+        })
+
+        const banji={
+            name:'1',
+            stus:[
+                'xiaoming',
+                'xiaoning',
+                'xiaotian',
+                'knight'
+            ],
+            [Symbol.iterator](){
+                let index = 0
+                return {
+                    next: ()=>{
+                        if(index<this.stus.length){
+                            index++
+                            return{value:this.stus[index],done:false}
+                        }
+                        return {value:undefined,done:true}
+                        
+                    }
+                }
+            }
+
+        }
+        for (let i in banji){
+            console.log(i)
+        }
+        for(let i of banji){
+            console.log(i)
+        }
+
+        // 生成器
+        function * gen(){
+            let a = yield '一只没有耳朵'
+            console.log('111',a)
+            let b = yield '一只没有眼睛'
+            console.log('2222',b)
+            let c = yield '真奇怪'
+            console.log('generator',c)
+        }
+        let iterator = gen()
+        console.log(iterator.next(1))
+        console.log(iterator.next(2))
+        console.log(iterator.next(3))
+        console.log(iterator.next(4))
+        console.log(iterator.next(5))
+
+        function one(){
+            setTimeout(()=>{
+                console.log(111)
+                iterator2.next()
+            },1000)
+        }
+        function two(){
+            setTimeout(()=>{
+                console.log(222)
+                iterator2.next()
+            },2000)
+        }
+        function three(){
+            setTimeout(()=>{
+                console.log(333)
+                iterator2.next()
+            },3000)
+        }
+        let iterator2 = (function *(){
+            yield one()
+            yield two()
+            yield three()
+        })()
+        iterator2.next()
+
+        // 集合去重、交集、并集、差集
+        let arr = [1,2,3,4,5,4,3,2,1]
+        console.log([...new Set(arr)])
+
+        let arr2 = [4,5,6,5,6]
+        console.log([...new Set(arr)].filter(item=>{ new Set(arr2).has(item)}))
+
+        // map
+        let m = new Map();
+        m.set('name','尚硅谷')
+        m.set('change',()=>{console.log("我们可以改变你")})
+        m.set({school:"尚硅谷"},['北京','上海','深圳'])
+        console.log(m.get('change'))
+
+
+        // class类
+        // function Phone(brand,price){
+        //     this.brand = brand;
+        //     this.price = price;
+        // }
+        // Phone.prototype.call = function(){
+        //     console.log("我可以打电话!!")
+        // }
+        // let Huawei = new Phone('华为',5999);
+        // console.log(Huawei)
+
+        class Phone{
+            // 静态方法
+            static change(){
+                console.log('我可以改变世界')
+            }
+            constructor(brand){
+                this.brand = brand
+                this.price = price
+            }
+            call(){
+                console.log("我可以打电话!")
+            }
+
+        }
+        let onePlus = new Phone("1+",1999)
+        console.log(onePlus)
+
+        class SmartPhone extends Phone {
+            // 默认constructor(){}
+            constructor(brand,price,color,size){
+                super(brand,price);//super是父类构造方法只能在创建对象的时候使用
+                this.color = color;
+                this.size = size;
+            }
+            photo(){
+                console.log('take phonos')
+            }
+            playGame(){
+                console.log('play games')
+            }
+            call(){
+                console.log('overwrite call')//对象方法重写
+            }
+        } 
+        const xiaomi = new SmartPhone('xiaomi',799,'black','4.7inch')
+
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

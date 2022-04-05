@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style scoped>
+        /* b站上看到的，我只是搬运工而已 */
+        .container{
+            width: 300px;
+            height: 300px;
+            /* border:1px solid #000; */
+            margin:100px auto;
+        }
+        .circle-progressbar{
+            position: relative;
+            width:300px;
+            height: 300px;
+        }
+        .circle-progressbar .title{
+            margin:0;
+            text-align: center;
+            line-height: 300px;
+            font-size: 30px;
+        }
+        .circle-progressbar .wrapper{
+            position:absolute;
+            top: 0;
+            width: 150px;
+            height: 300px;
+            /* border: 1px solid red; */
+            overflow: hidden;
+        }
+        .circle-progressbar  .wrapper.left-wrapper{
+            left: 0;
+        }
+        .circle-progressbar  .wrapper.right-wrapper{
+            right: 0;
+        }
+        .circle-progressbar .wrapper .circle-bar{
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border:30px solid transparent;
+            border-radius: 50%;
+            transform: rotate(-135deg);
+            transition: .2s;
+        }
+        .circle-progressbar .left-wrapper .circle-bar{
+            left: 0;
+            border-left: 30px solid orange;
+            border-bottom: 30px solid orange;
+           
+        }
+        .circle-progressbar .right-wrapper .circle-bar{
+            right:0;
+            border-right: 30px solid blue;
+            border-top: 30px solid blue;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="circle-progressbar">
+            <div class="title">0%</div>
+            <div class="wrapper left-wrapper">
+                <div class="circle-bar"></div>
+            </div>
+            <div class="wrapper right-wrapper">
+                <div class="circle-bar"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const circleProgressBar = CircleProgressBar();
+    let p = 0;
+    let t = setInterval(()=>{
+        circleProgressBar(++p)
+    },100);
+
+    // circleProgressBar(100);
+    function CircleProgressBar(){
+        
+        const oLeftCircleBar = getCircleBar('left'),
+              oRightCircleBar = getCircleBar('right'),
+              oTitle = document.querySelector('.circle-progressbar .title')
+
+        return function(percent){
+            if(percent<=50 && percent>=0){
+                setRotate(oRightCircleBar,percent)
+            }else if (percent>50 && percent<=100){
+                setRotate(oLeftCircleBar,percent-50)
+            }else{
+                clearInterval(t)
+            }
+
+            if(0<=percent && percent<=100){
+                oTitle.innerHTML = `${percent}%`
+            }
+        }
+
+        function formatDegree(percent){
+            return `rotate(${-135+(360/100*percent)}deg)`
+        }
+
+        function setRotate(node,percent){
+            node.style.transform = formatDegree(percent)
+        }
+
+        function getCircleBar(dir){
+            return document.querySelector(`.circle-progressbar .${dir}-wrapper .circle-bar`)
+        }
+    }
+</script>
+</html>
