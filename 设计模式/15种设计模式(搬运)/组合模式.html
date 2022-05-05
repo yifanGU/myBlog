@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 文件夹 组合对象
+        function Folder(name) {
+            this.name = name;
+            this.parent = null;
+            this.files = [];
+        }
+
+        Folder.prototype = {
+            constructor: Folder,
+
+            add: function(file) {
+                file.parent = this;
+                this.files.push(file);
+
+                return this;
+            },
+
+            scan: function() {
+                // 委托给叶对象处理
+                for (var i = 0; i < this.files.length; ++i) {
+                    this.files[i].scan();
+                }
+            },
+
+            remove: function(file) {
+                if (typeof file === 'undefined') {
+                    this.files = [];
+                    return;
+                }
+
+                for (var i = 0; i < this.files.length; ++i) {
+                    if (this.files[i] === file) {
+                        this.files.splice(i, 1);
+                    }
+                }
+            }
+        };
+
+        // 文件 叶对象
+        function File(name) {
+            this.name = name;
+            this.parent = null;
+        }
+
+        File.prototype = {
+            constructor: File,
+
+            add: function() {
+                console.log('文件里面不能添加文件');
+            },
+
+            scan: function() {
+                var name = [this.name];
+                var parent = this.parent;
+
+                while (parent) {
+                    name.unshift(parent.name);
+                    parent = parent.parent;
+                }
+
+                console.log(name.join(' / '));
+            }
+        };
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
