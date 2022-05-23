@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function person(name){
+            this.name = name
+        }
+
+
+        let getSingleton=function(fn){
+            console.log(fn)
+            let singleTon = null
+            return function(input){
+                if (!singleTon){ singleTon=fn.apply(this,arguments)}
+                return singleTon
+            }
+        }
+        let new_person =getSingleton((name)=>{
+            let _ = new person(name);
+            return _
+        })
+        console.log(new_person)
+
+
+        console.log(new_person('a').name)
+        console.log(new_person('b').name)
+        console.log(new_person('c').name)
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

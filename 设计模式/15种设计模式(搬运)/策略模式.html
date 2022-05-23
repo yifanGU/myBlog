@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let errorMsgs ={
+            default:'输入格式错误',
+            minLength:'距离过短',
+            isNumber:'输入不是数字',
+            required:'输入不能为空'
+        }
+        let rules = {
+            minLength: (value,length,errorMsg)=>{
+                if (value.length<length){
+                    return errorMsg||errorMsgs['minLength']
+                }
+            },
+            isNumber: (value,errorMsg)=>{
+                if (!/d+/.test(value)){
+                    return errorMsg||errorMsgs['isNumber']
+                }
+            },
+            required:(value,errorMsg)=>{
+                if (value===''){
+                    return errorMsg||errorMsgs['required']
+                }
+            },
+        }
+        function Vaildator(){
+            this.items = []
+        }
+        Vaildator.prototype={
+            constructor:Vaildator,
+            add: function(value,rule,errorMsg){
+                let arg = [value]
+                if (rule.indexOf('minLength')!==-1){
+                    let tmp = rule.split(':')
+                    arg.push(tmp[1])
+                    rule = tmp[0]
+                }
+                arg.push(errorMsg)
+                this.items.push(()=> rules[rule].apply(this,arg))
+            },
+            start: function(){
+                this.items.forEach(element => {
+                    let result = element()
+                    if (result){
+                        console.log(result)
+                    }
+            })},
+        }
+        function testTel(val){return val}
+        let validate = new Vaildator()
+        validate.add(testTel('ccc'), 'isNumber', '只能为数字'); // 只能为数字
+        validate.add(testTel(''), 'required'); // 内容不为空
+        validate.add(testTel('123'), 'minLength:5', '最少5位'); // 最少5位
+        validate.add(testTel('12345'), 'minLength:5', '最少5位');
+        validate.start()
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

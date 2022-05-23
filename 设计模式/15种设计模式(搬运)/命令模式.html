@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var MacroCommand = {
+            commands: [],
+
+            add: function(command) {
+                this.commands.push(command);
+
+                return this;
+            },
+
+            remove: function(command) {
+                if (!command) {
+                    this.commands = [];
+                    return;
+                }
+
+                for (var i = 0; i < this.commands.length; ++i) {
+                    if (this.commands[i] === command) {
+                        this.commands.splice(i, 1);
+                    }
+                }
+            },
+
+            execute: function() {
+                for (var i = 0; i < this.commands.length; ++i) {
+                    this.commands[i].execute();
+                }
+            }
+        };
+
+        var showTime = {
+            execute: function() {
+                console.log('time');
+            }
+        };
+
+        var showName = {
+            execute: function() {
+                console.log('name');
+            }
+        };
+
+        var showAge = {
+            execute: function() {
+                console.log('age');
+            }
+        };
+
+        MacroCommand.add(showTime).add(showName).add(showAge);
+
+        MacroCommand.remove(showName);
+
+        MacroCommand.execute(); // time age
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
