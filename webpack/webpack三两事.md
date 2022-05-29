@@ -116,15 +116,63 @@ module.exports = {
 
 
 
+## webpack 总结
+- entry
+    - 1.string 
+    单入口，打包形成一个chunk，输出一个bundle
+    - 2.array
+    多入口，只会形成一个chunk，输出一个bundle，只有在HMR功能里面让html热更新生效
+    - 3.object
+    多入口，有几个入口文件形成几个chunk，输出几个bundle，此时chunk的名称是key
+- output
+    - filename文件名称（指定名称+目录）
+    - path输出文件目录（所有资源输出的公共目录）
+    - publicPath 所有资源引入的公共路径前缀
+    - chunkFilename 非入口chunk的文件名称（import或者optimization产生非入口chunk）
+    - library 整个库向外暴露的名称，结合dll用
+    - libraryTarget 暴露的变量名添加到哪个名称上，结合dll一起使用
+- module
+- resolve
+    - 解析模块的规则
+    - alias 配置解析模块别名,可以简写路径
+    - extensions 配置省略文件后缀名
+    - modules 告诉webpack解析模块去找哪个目录
+- devServer
+    - 一定用于开发环境
+    - contentBase 运行代码的目录
+    - watchcontentBase 监视目录下所有文件，一旦变化就会reload重载
+    - watchOptions ignored 忽略文件
+    - compress 启动gzip压缩
+    - port 指定端口号
+    - host 指定域名
+    - open 自动打开浏览器
+    - hot 开启HMR功能
+    - clientLogLevel 日志信息
+    - quiet 除了基本启动信息外其他内容不要打印
+    - overlay 如果出现错误，全屏提示是否打开
+    - proxy 服务器代理，解决开发环境跨域问题
+        ```
+            '/api':{
+                target:'http://localhost:3000',
+                pathRewrite:{
+                    '^/api':''
+                }
+            }
+        ```
+- optimization
+    - 只在生产环境有意义
+    - splitChunks
+        - chunks
+        - minsize 分割chunk最小大小
+        - maxsize 分割chunk最大，无限制的话则设置为0
+        - minChunks 被提取的chunk最小被引用的次数
+        - maxAsyncRequests 按需加载时并行加载文件最大数量
+        - maxInitialRequests 入口js文件最大并行请求数
+        - automaticNameDelimiter 名称连接符
+        - name 可以使用的命名规则
+        - cacheGroups 分割chunk的组
+    - runtimeChunk 将当前模块记录其他模块的hash单独打包为一个文件
+    - minimizer 配置生产环境的压缩方案
 
-- HMR
-- source-map
-- oneof
-- 缓存
-- tree shaking
-- code split
-- 懒加载预加载
-- PWA
-- 多进程打包
-- externals
-- dll
+
+
